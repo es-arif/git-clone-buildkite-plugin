@@ -8,6 +8,18 @@ if [ ! -z ${branch} ]; then
     BRANCH_PARAM="--branch ${branch}"
 fi
 
-echo "cloning repository ${BUILDKITE_PLUGIN_GIT_CLONE_REPOSITORY} ${BRANCH_PARAM}"
+# Check for branch parameters
+commit=${BUILDKITE_PLUGIN_GIT_CLONE_COMMIT-""}
+COMMIT_PARAM=
+if [ ! -z ${commit} ]; then
+    COMMIT_PARAM="${commit}"
+fi
+
+if [ ! -z ${commit} ] && [ ! -z ${branch} ]; then
+    echo "both branch and commit parameters are set, unable to determine correct clone option"
+    exit 1
+fi
+
+echo "cloning repository ${BUILDKITE_PLUGIN_GIT_CLONE_REPOSITORY} ${BRANCH_PARAM}${COMMIT_PARAM}"
 
 git clone ${BUILDKITE_PLUGIN_GIT_CLONE_REPOSITORY} ${BRANCH_PARAM}
