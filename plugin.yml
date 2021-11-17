@@ -8,4 +8,6 @@ configuration:
       type: string
     branch:
       type: string
+    directory:
+      type: string
   additionalProperties: false
